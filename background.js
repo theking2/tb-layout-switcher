@@ -2,7 +2,7 @@ const DEFAULT_BREAKPOINT = 1400;
 const DEFAULT_LAYOUT_WHEN_NARROW = "wide";
 const DEFAULT_LAYOUT_WHEN_WIDE = "vertical";
 const CHECK_ALARM = "layout-width-check";
-const CHECK_PERIOD_MINUTES = 0.01;
+const CHECK_PERIOD_MINUTES = 0.5;
 
 let lastAppliedLayout = null;
 let lastMeasuredWidth = null;
