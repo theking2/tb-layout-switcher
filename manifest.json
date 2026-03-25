@@ -14,5 +14,5 @@
     "scripts": ["background.js"],
     "type": "module"
   },
-  "permissions": ["alarms", "tabs"]
+  "permissions": ["alarms", "tabs", "menus", "storage"]
 }

@@ -8,7 +8,7 @@ Automatically switches the Thunderbird mail layout between:
 ## Current behavior
 
 - Breakpoint: `1400px`
-- Poll interval: `0.6s` (via alarms)
+- Poll interval: `30s` (via alarms)
 - Trigger sources:
   - startup
   - window created

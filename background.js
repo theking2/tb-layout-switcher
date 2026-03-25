@@ -6,6 +6,22 @@ const CHECK_PERIOD_MINUTES = 0.5;
 
 let lastAppliedLayout = null;
 let lastMeasuredWidth = null;
+let autoLayoutEnabled = true;
+
+const MENU_ITEM_ID = "toggle-auto-layout";
+
+function menuTitle() {
+  return autoLayoutEnabled
+    ? "Auto Layout Switcher: On"
+    : "Auto Layout Switcher: Off";
+}
+
+async function setAutoLayoutEnabled(enabled) {
+  autoLayoutEnabled = enabled;
+  await messenger.storage.local.set({ autoLayoutEnabled: enabled });
+  await messenger.menus.update(MENU_ITEM_ID, { title: menuTitle() });
+  messenger.menus.refresh();
+}
 
 const ALLOWED_LAYOUTS = new Set(["standard", "wide", "vertical"]);
 
@@ -52,6 +68,10 @@ async function getTargetWindowState() {
 }
 
 async function applyLayoutIfNeeded(reason) {
+  if (!autoLayoutEnabled) {
+    return;
+  }
+
   const targetWindowState = await getTargetWindowState();
   const width = targetWindowState?.width ?? null;
   const mailTabId = targetWindowState?.mailTabId ?? null;
@@ -93,7 +113,27 @@ function schedulePeriodicCheck() {
   });
 }
 
+function registerMenu() {
+  messenger.menus.create({
+    id: MENU_ITEM_ID,
+    title: menuTitle(),
+    contexts: ["tools_menu"],
+  });
+
+  messenger.menus.onClicked.addListener((info) => {
+    if (info.menuItemId !== MENU_ITEM_ID) {
+      return;
+    }
+    void setAutoLayoutEnabled(!autoLayoutEnabled);
+  });
+}
+
 async function initialize() {
+  const stored = await messenger.storage.local.get("autoLayoutEnabled");
+  if (typeof stored.autoLayoutEnabled === "boolean") {
+    autoLayoutEnabled = stored.autoLayoutEnabled;
+  }
+  registerMenu();
   schedulePeriodicCheck();
   await applyLayoutIfNeeded("startup");
 }
