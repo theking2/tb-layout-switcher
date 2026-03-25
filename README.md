@@ -32,3 +32,8 @@ In `background.js`, adjust:
 - `DEFAULT_LAYOUT_WHEN_NARROW`
 - `DEFAULT_LAYOUT_WHEN_WIDE`
 - `CHECK_PERIOD_MINUTES`
+
+
+## Repo
+
+You can find the repo on [github](https://github.com/theking2/tb-layout-switcher)
